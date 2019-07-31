@@ -1,0 +1,165 @@
+%   Author: Anna Murphy
+%   File:   nihilus-shrimp.sty
+%   Description:
+%           Style file for latex documents.
+%   Usage:
+%           \documentClass{article}
+%           \usepackage{nihilus-shrimp}
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{nihilus-shrimp}[]
+
+%%%% ---- Packages ---- %%%%
+
+%%% Date, but better
+\usepackage[australian]{babel}
+
+%%% If \ Then's
+\usepackage{ifthen}
+
+%%% Linguistics
+%	Trees
+\usepackage{qtree}
+%	Trees and arrows
+\usepackage{tree-dvips}
+%	Glosses
+\usepackage{lingmacros}
+
+%%% Fonts
+%	Families
+\usepackage{fontspec}
+%	Color
+\usepackage{xcolor}
+
+%%% Reformat Sections
+\usepackage{titlesec}
+
+%%%	Framed sections
+\usepackage{mdframed}
+
+%%%	Character Literals
+\usepackage{verbatim}
+
+%%%% ---- Formatting ---- %%%%
+
+%%% Formating
+% 	Separate paragraphs with no tabs.
+\setlength{\parskip}{\baselineskip}%
+\setlength{\parindent}{0pt}%
+
+%%%	Main Font
+\setmainfont{Open Sans}
+
+%%% Increase Margins
+\usepackage[left=4cm,right=4cm]{geometry}
+
+%%%% ---- New Commands ---- %%%%
+
+%%% Add 'prompt' to the header
+\newcommand{\promptholder}{}
+\newcommand{\prompt}[1]
+{
+	\renewcommand{\promptholder}{#1}
+}
+
+%%% Default Author
+\author{Anna Murphy}
+
+%%%	Redone maketitle
+\makeatletter
+	\def\@maketitle
+	{
+		\let \footnote \thanks
+		\begin{center}
+			% Title
+			{
+				\fontspec{Raleway ExtraLight}
+				\Huge \@title
+			}
+			% Author
+			\vskip 0em
+			{
+				\large \@author
+			}
+			% Date
+			\vskip 0em
+			{
+				\@date
+			}
+			% If the prompt is omitted
+			% Do nothing
+			% Else, add a space and formatted prompt
+			\ifthenelse
+				{
+					\equal{\promptholder}{}
+				}
+				{}
+				{
+					\vskip 0em
+					\small
+					\textcolor{gray}{\textit{\promptholder}}
+				}
+		\end{center}
+		\vskip .5em
+		\hrule
+	}
+\makeatother
+
+%%% Section Titles
+
+\titleformat
+	{\section}
+	{
+		\fontspec{Raleway Light}\LARGE
+	}
+	{\thesection}
+	{1em}
+	{}
+
+\titleformat
+	{\subsection}
+	{
+		\fontspec{Raleway Light}\Large
+	}
+	{\thesubsection}
+	{1em}
+	{}
+
+\titleformat
+	{\subsubsection}
+	{
+		\fontspec{Raleway ExtraLight Italic}\Large
+	}
+	{\thesubsubsection}
+	{1em}
+	{}
+
+%%%	Paragraph Breack
+
+\newcommand{\breakDivider}{\vspace{0.8em}\hrule}
+
+%%%	Custom Quote Block
+
+\newmdenv
+[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep,
+	leftmargin=1.5em,
+	font=\itshape
+]{Quote}
+
+
+%%%	Code Formatting
+
+%	In Line Code
+\newcommand{\code}[1]{\texttt{#1}}
+
+\newenvironment{codeblock}
+{\endgraf\verbatim}
+{\endverbatim}
+
+\BeforeBeginEnvironment{codeblock}{\begin{Quote}}
+\AfterEndEnvironment{codeblock}{\end{Quote}}
